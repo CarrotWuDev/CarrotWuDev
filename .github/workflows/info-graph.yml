@@ -41,8 +41,8 @@ jobs:
 
       - name: Organize Files
         run: |
-          mkdir -p dist/3d
-          mv profile-3d-contrib/* dist/3d/
+          sudo mkdir -p dist/3d
+          sudo mv profile-3d-contrib/* dist/3d/
 
       - name: Push to Static Branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
