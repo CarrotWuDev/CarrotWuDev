@@ -1,38 +1,32 @@
-name: Generate Snake Animation
+name: GitHub-Profile-3D-Contrib
 
 on:
   schedule:
-    # 每天跑一次
-    - cron: "0 0 * * *" 
-  workflow_dispatch: # 允许手动运行
+    - cron: "0 18 * * *"
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    name: generate-github-profile-3d-contrib
     
-    # 允许 Action 推送代码到仓库
+    # 允许 Action 写入仓库
     permissions:
       contents: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Generate Snake
-        uses: Platane/snk@v3
-        id: snake-gif
-        with:
-          github_user_name: ${{ github.repository_owner }}
-          # 输出两张图：一张白天模式，一张暗黑模式
-          outputs: |
-            dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
-
-      - name: Push to Output Branch
+      - uses: actions/checkout@v4
+      
+      - uses: yoshi389111/github-profile-3d-contrib@0.7.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+          
+      # 使用专门的 Action 推送到独立的 output-3d 分支
+      - name: Push to Output-3D Branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
-          # 将生成的图片推送到一个叫 output 的独立分支，保持主分支干净
-          target_branch: output
-          build_dir: dist
+          target_branch: output-3d
+          build_dir: profile-3d-contrib
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
