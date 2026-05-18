@@ -1,32 +1,53 @@
-name: GitHub-Profile-3D-Contrib
+name: Generate GitHub Profile Animations
 
 on:
   schedule:
     - cron: "0 18 * * *"
   workflow_dispatch:
 
+# 修复 Node.js 版本弃用警告
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: generate-github-profile-3d-contrib
     
-    # 允许 Action 写入仓库
     permissions:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: yoshi389111/github-profile-3d-contrib@0.7.1
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate 3D Contrib
+        # 此动作会自动在根目录下生成包含 11 张图的 profile-3d-contrib 文件夹
+        uses: yoshi389111/github-profile-3d-contrib@0.7.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
-          
-      # 使用专门的 Action 推送到独立的 output-3d 分支
-      - name: Push to Output-3D Branch
+
+      - name: Generate Snake
+        uses: Platane/snk@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          # 配置输出贪吃蛇的所有主流格式和官方配色方案
+          outputs: |
+            dist/snake/github-snake.svg
+            dist/snake/github-snake-dark.svg?palette=github-dark
+            dist/snake/github-snake-light.svg?palette=github-light
+            dist/snake/ocean-snake.svg?color_snake=orange&color_dots=#bfd6f6,#8dbdff,#64a1f4,#4b91f1,#3c7dd9
+            dist/snake/ocean-snake.gif?color_snake=orange&color_dots=#bfd6f6,#8dbdff,#64a1f4,#4b91f1,#3c7dd9&color_background=#000000
+
+      - name: Organize Files
+        run: |
+          mkdir -p dist/3d
+          mv profile-3d-contrib/* dist/3d/
+
+      - name: Push to Static Branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
-          target_branch: output-3d
-          build_dir: profile-3d-contrib
+          target_branch: static
+          build_dir: dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
