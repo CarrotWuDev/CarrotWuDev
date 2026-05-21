@@ -3,6 +3,8 @@
 下面一些东西是我开发的：
 
 - [WordMarker](https://github.com/CarrotWuDev/WordMarker)：将 AI 生成的内容转换为 Word 格式。
+
+  <a href="https://apps.microsoft.com/detail/9p36z3hsbczg?referrer=appbadge&mode=full" target="_blank"  rel="noopener noreferrer"><img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/></a>
 - [CarrotPackage](https://github.com/CarrotWuDev/carrot_package_manager)：一个基于UV 的 Python 项目管理器。
 - [iShow](https://github.com/CarrotWuDev/CarrotWuDev.github.io)：一个完全自定义的新粗野主义的个人博客。可以展示游戏、音乐、电影等。
 
